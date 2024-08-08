@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/homework2
+    username: postgres
+    password: qwas1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
+  jackson:
+    serialization:
+      indent_output: true
+
+# Logging configuration
+logging:
+  level:
+    org:
+      springframework:
+        orm: DEBUG
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor: TRACE
