@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -47,16 +46,16 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Book>> getBookById(@PathVariable UUID id) {
-        Optional<Book> book = bookRepository.getBookById(id);
-        return book.map(b -> {
+        Book book = bookRepository.getBookById(id);
+        if (book != null) {
             ApiResponse<Book> response = new ApiResponse<>(
                     "Book retrieved successfully",
-                    b,
+                    book,
                     HttpStatus.OK,
                     LocalDateTime.now()
             );
             return ResponseEntity.ok(response);
-        }).orElseGet(() -> {
+        } else {
             ApiResponse<Book> response = new ApiResponse<>(
                     "Book not found",
                     null,
@@ -64,7 +63,7 @@ public class BookController {
                     LocalDateTime.now()
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        });
+        }
     }
 
     @GetMapping("/title/{title}")
@@ -91,16 +90,16 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Book>> updateBookById(@PathVariable UUID id, @RequestBody BookRequest bookRequest) {
-        Optional<Book> updatedBook = bookRepository.updateBookById(id, bookRequest);
-        return updatedBook.map(book -> {
+        Book updatedBook = bookRepository.updateBookById(id, bookRequest);
+        if (updatedBook != null) {
             ApiResponse<Book> response = new ApiResponse<>(
                     "Book updated successfully",
-                    book,
+                    updatedBook,
                     HttpStatus.OK,
                     LocalDateTime.now()
             );
             return ResponseEntity.ok(response);
-        }).orElseGet(() -> {
+        } else {
             ApiResponse<Book> response = new ApiResponse<>(
                     "Book not found",
                     null,
@@ -108,7 +107,7 @@ public class BookController {
                     LocalDateTime.now()
             );
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        });
+        }
     }
 
     @DeleteMapping("/{id}")
