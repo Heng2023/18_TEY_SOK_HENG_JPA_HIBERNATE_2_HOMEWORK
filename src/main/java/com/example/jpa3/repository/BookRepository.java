@@ -46,8 +46,9 @@ public class BookRepository {
     public Book updateBookById(UUID id, BookRequest bookRequest) {
         Book book = getBookById(id);
         if (book != null) {
+            entityManager.detach(book);
             modelMapper.map(bookRequest, book);
-            entityManager.merge(book);
+            book = entityManager.merge(book);
         }
         return book;
     }
